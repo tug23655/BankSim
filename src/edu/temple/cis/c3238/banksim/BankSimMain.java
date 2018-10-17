@@ -18,7 +18,7 @@ public class BankSimMain {
             threads[i] = new TransferThread(b, i, INITIAL_BALANCE);
             threads[i].start();
         }
-
+//test
 //        b.test();
           System.out.printf("Bank transfer is in the process.\n");
     }
