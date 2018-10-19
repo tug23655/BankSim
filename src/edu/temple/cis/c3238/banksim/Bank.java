@@ -1,5 +1,4 @@
 package edu.temple.cis.c3238.banksim;
-
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
@@ -33,6 +32,7 @@ public class Bank {
     }
 
     public void test() {
+        
         int sum = 0;
         for (Account account : accounts) {
             System.out.printf("%s %s%n", 
