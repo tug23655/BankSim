@@ -29,6 +29,7 @@ public class Bank {
         ntransacts = 0;
     }
 
+    //helper method to wait thread until shouldTest
     public synchronized void waitHelper() throws InterruptedException {
         while (flag) //
         {
@@ -37,7 +38,8 @@ public class Bank {
         counter++;
     }
 
-    //
+    //helper method to decrement counter
+    //notifyAll to wake up threads
     public synchronized void decrementHelper() throws InterruptedException {
         counter--;
         notifyAll();
