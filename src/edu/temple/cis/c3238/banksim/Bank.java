@@ -29,19 +29,37 @@ public class Bank {
         ntransacts = 0;
     }
 
+    public synchronized void waitHelper() throws InterruptedException {
+        while (flag) //
+        {
+            wait();
+        }
+        counter++;
+    }
+
+    //
+    public synchronized void decrementHelper() throws InterruptedException {
+        counter--;
+        notifyAll();
+    }
+
     //increase counter for new transfer threads
     //decrement counter after transfer
     public void transfer(int from, int to, int amount) throws InterruptedException {
-        counter++;
+        waitHelper();
 //        accounts[from].waitForAvailableFunds(amount);
         //synchronized (accounts) {
         if (accounts[from].withdraw(amount)) {
             accounts[to].deposit(amount);
+            System.out.printf("%s %s%n",
+                    Thread.currentThread().toString(), accounts[to].toString());
         }
-        counter--;
+        decrementHelper();
 
         if (shouldTest()) {
-            test();
+            flag = true;
+
+            new TestThread(this).start();
         }
         //}
     }
@@ -49,20 +67,17 @@ public class Bank {
     //use while loop for wait, keep checking(the boolean student) if should test
     //sumthread is waiting for counter and boolean
     //notifyall when conditions met
-    public void test() throws InterruptedException {
-        if(counter == 0){
-            flag = true;
-        }
-        
-        while(flag == false){
-            TestThread.currentThread().wait();
+    public synchronized void test() throws InterruptedException {
+
+        //10/22
+        while (counter > 0) {
+            wait();
         }
 
         int sum = 0;
 
         for (Account account : accounts) {
-            System.out.printf("%s %s%n",
-                    Thread.currentThread().toString(), account.toString());
+
             sum += account.getBalance();
         }
         System.out.println(Thread.currentThread().toString()
@@ -75,6 +90,10 @@ public class Bank {
             System.out.println(Thread.currentThread().toString()
                     + " The bank is in balance");
         }
+
+        notifyAll();
+
+        flag = false;
     }
 
     public int size() {
