@@ -31,34 +31,39 @@ public class Bank {
 
     //increase counter for new transfer threads
     //decrement counter after transfer
-    public void transfer(int from, int to, int amount) {
+    public void transfer(int from, int to, int amount) throws InterruptedException {
         counter++;
 //        accounts[from].waitForAvailableFunds(amount);
-        synchronized (accounts) {
-            if (accounts[from].withdraw(amount)) {
-                accounts[to].deposit(amount);
-            }
-            counter--;
-
-            if (counter == 0 && flag == true) {
-                synchronized (this) {
-                   Thread thread = new Thread();
-                   thread.start();
-                }
-                test();
-            }
+        //synchronized (accounts) {
+        if (accounts[from].withdraw(amount)) {
+            accounts[to].deposit(amount);
         }
+        counter--;
+
+        if (shouldTest()) {
+            test();
+        }
+        //}
     }
 
     //use while loop for wait, keep checking(the boolean student) if should test
     //sumthread is waiting for counter and boolean
     //notifyall when conditions met
-    public void test() {
+    public void test() throws InterruptedException {
+        if(counter == 0){
+            flag = true;
+        }
+        
+        while(flag == false){
+            TestThread.currentThread().wait();
+        }
+
         int sum = 0;
 
         for (Account account : accounts) {
             System.out.printf("%s %s%n",
                     Thread.currentThread().toString(), account.toString());
+            sum += account.getBalance();
         }
         System.out.println(Thread.currentThread().toString()
                 + " Sum: " + sum);
