@@ -44,4 +44,16 @@ public class Account {
     public String toString() {
         return String.format("Account[%d] balance %d", id, balance);
     }
+    
+    //task 4
+    public synchronized void waitForAvailableFunds(int Amount) throws InterruptedException {
+        
+        if (balance < Amount){
+            //test if this function works
+            System.out.println("\nBalance is not enough!!!!!!!!!!\n");
+            wait();
+        }else
+            notify();
+        
+    }
 }

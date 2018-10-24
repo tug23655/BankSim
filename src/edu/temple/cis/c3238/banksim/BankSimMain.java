@@ -18,20 +18,18 @@ public class BankSimMain {
         for (int i = 0; i < NACCOUNTS; i++) {
             threads[i] = new TransferThread(b, i, INITIAL_BALANCE);
             threads[i].start();
-            
-            if(!threads[i].interrupted()) {
-                threads[i].interrupt();
-            }
-            //stop other threads until this thread is complete
-            try {
-                threads[i].join();
-            } catch(InterruptedException ex) {
-
-            }
+            //task 5
+//            if(!threads[i].interrupted()) {
+//                threads[i].interrupt();
+//            }
+//            //stop other threads until this thread is complete
+//            try {
+//                threads[i].join();
+//            } catch(InterruptedException ex) {
+//
+//            }
         }
-        //
-        //thread interrupt
-        //thread join
+
 //test
 //        b.test();
           
