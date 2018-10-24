@@ -22,6 +22,7 @@ class TransferThread extends Thread {
             try{
             int toAccount = (int) (bank.size() * Math.random());
             int amount = (int) (maxAmount * Math.random());
+                     
             bank.transfer(fromAccount, toAccount, amount);
             }
             catch(InterruptedException ex){
