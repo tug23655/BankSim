@@ -14,16 +14,27 @@ public class BankSimMain {
         Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
         Thread[] threads = new Thread[NACCOUNTS];
         // Start a thread for each account
+        System.out.printf("Bank transfer is in the process.\n");
         for (int i = 0; i < NACCOUNTS; i++) {
             threads[i] = new TransferThread(b, i, INITIAL_BALANCE);
             threads[i].start();
+            
+            if(!threads[i].interrupted()) {
+                threads[i].interrupt();
+            }
+            //stop other threads until this thread is complete
+            try {
+                threads[i].join();
+            } catch(InterruptedException ex) {
+
+            }
         }
         //
         //thread interrupt
         //thread join
 //test
 //        b.test();
-          System.out.printf("Bank transfer is in the process.\n");
+          
     }
 }
 

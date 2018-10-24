@@ -25,7 +25,7 @@ class TransferThread extends Thread {
             bank.transfer(fromAccount, toAccount, amount);
             }
             catch(InterruptedException ex){
-                
+                System.out.println("Interrupted: " + Thread.currentThread().toString() + "Bank Closed");
             }
         }
     }

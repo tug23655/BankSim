@@ -56,6 +56,8 @@ public class Bank {
             System.out.printf("%s %s%n",
                     Thread.currentThread().toString(), accounts[to].toString());
         }
+        
+        
         decrementHelper();
 
         if (shouldTest()) {
@@ -71,7 +73,7 @@ public class Bank {
     //notifyall when conditions met
     public synchronized void test() throws InterruptedException {
 
-        //10/22
+        
         while (counter > 0) {
             wait();
         }
